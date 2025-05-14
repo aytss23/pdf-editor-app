@@ -146,7 +146,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PARSER</string>
+     <string>SPLITTER</string>
     </property>
    </widget>
    <widget class="QPushButton" name="converter_push_button">

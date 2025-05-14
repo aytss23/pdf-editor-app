@@ -4,7 +4,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 from recent import RecentPDFDatabaseManager
 from merge import PDFMerger
-from parse import PDFParser   
+from split import PDFSplitter   
 from reader import PDFReader
 from editor import PDFEditor
 from convert import PDFConverter
@@ -53,9 +53,6 @@ class PDFEditorUI(QMainWindow): #QMainWindow sınıfından türetilen PDFEditorU
         self.pen_colors = ['COLOR - BLACK','COLOR - RED','COLOR - BLUE','COLOR - GREEN','COLOR - WHITE'] # kalem renkleri listesi. 
         
         self.pen_sizes = ['SIZE - LIGHT', 'SIZE - NORMAL', 'SIZE - BOLD'] # kalem boyutunun listesi. 
-
-        
-
 
     # dosya tarayıcı butonuna tıklandığında çağrılan fonksiyon.
     def file_browser_push_button_clicked(self): return None
@@ -106,8 +103,6 @@ class PDFMergerUI(QMainWindow): #QMainWindow sınıfından türetilen PDFMergerU
 
         self.set_widget_properties() # arayüz bileşenlerinin özelliklerini ayarlama fonksiyonlarını çağır.
 
-        self.pdf_merge_manager = PDFMerger()
-
     # arayüzü içeri aktarma fonksiyonu
     def init_ui(self): uic.loadUi('..\\ui\\merge_ui.ui', self)
 
@@ -130,17 +125,56 @@ class PDFMergerUI(QMainWindow): #QMainWindow sınıfından türetilen PDFMergerU
 
     # pdf birleştirme butonuna tıklandığında çağrılan fonksiyon.
     def merge_pdfs_push_button_clicked(self): 
-        self.pdf_merge_manager.merger_two_pdfs([self.pdf_file_a_path_line_edit.text(), self.pdf_file_b_path_line_edit.text()])
+        pdf_merge_manager = PDFMerger()
 
-        self.pdf_merge_manager.write_into_new_pdf_file(self.result_pdf_file_path_line_edit.text())
+        pdf_merge_manager.merger_two_pdfs([self.pdf_file_a_path_line_edit.text(), self.pdf_file_b_path_line_edit.text()])
+
+        pdf_merge_manager.write_into_new_pdf_file(self.result_pdf_file_path_line_edit.text())
 
     # birleştirilen pdf dosyalarının bulunduğu klasörü açan fonksiyon. 
     def set_pdf_result_path_clicked(self): self.result_pdf_file_path_line_edit.setText(f"{QFileDialog.getExistingDirectory(self, 'SET RESULT FOLDER')}/merged_pdfs_result.pdf") 
 
-class PDFParserUI(QMainWindow): #QMainWindow sınıfından türetilen PDFParserUI sınıfı
+class PDFSplitterUI(QMainWindow): #QMainWindow sınıfından türetilen PDFParserUI sınıfı
     def __init__(self): 
         super().__init__() # QMainWindow sınıfını başlat.
 
+        self.init_ui() # arayüzü içeri aktarma fonksiyonunu çağır.
+
+        self.set_widget_properties() # arayüz bileşenlerinin özelliklerini ayarlama fonksiyonunu çağır.
+
+    def init_ui(self): uic.loadUi("..\\ui\\split_ui.ui", self) #arayüzü içeri aktar.
+
+    # arayüz bileşenlerinin özelliklerini ayarla.
+    def set_widget_properties(self): 
+
+        self.browse_pdf_file_push_button.clicked.connect(self.browse_pdf_file_push_button_clicked) # dosya tarayıcı butonuna tıklandığında ilgili fonksiyonu çağır.
+
+        self.split_pdf_file_push_button.clicked.connect(self.split_pdf_file_push_button_clicked) # dosya parçalama butonu tıklanınca ilgili fonksiyonu çağır.
+
+        self.set_pdf_file_result_path_push_button.clicked.connect(self.set_pdf_file_result_path_push_button_clicked) # dosya tarayıcı butonu tıklandığında ilgili fonksiyonu çağır.
+
+    # dosya tarayıcı butonuna tıklanınca çağrılan fonksiyon.
+    def browse_pdf_file_push_button_clicked(self): self.pdf_file_path_line_edit.setText(QFileDialog.getOpenFileName(self, "SELECT '.pdf' FILE", "", "PDF Files (*.pdf)")[0])
+
+    # sonuç dosyası yolu tarayıcı butonu tıklanınca çağrılan fonksiyon.
+    def set_pdf_file_result_path_push_button_clicked(self): self.result_pdf_file_path_line_edit.setText(QFileDialog.getExistingDirectory(self, "SELECT RESULT FOLDER") + "/split_pdf_file_result.pdf") 
+
+    # dosya parçalama butonu tıklanınca çağrılan fonksiyon.
+    def split_pdf_file_push_button_clicked(self): 
+        pdf_splitter = PDFSplitter() # PDFSplitter sınıfından nesne oluştur.
+
+        # Yolu verilen PDF dosyasından belirli sayfaları ayır ve yolu verilen farklı bir dosyaya yaz.
+        pdf_splitter.extract_selected_pages_range(self.pdf_file_path_line_edit.text(), int(self.start_page_line_edit.text()), int(self.end_page_line_edit.text()), self.result_pdf_file_path_line_edit.text()) 
+
+        self.log_recent_pdf_file(self.result_pdf_file_path_line_edit.text()) # son kullanulan PDF dosyasını veritabanına kaydet. 
+
+    # son kullanılan PDF Dosyasını veritabanına kaydet.
+    def log_recent_pdf_file(self, recent_pdf_file_path): 
+        database_manager = RecentPDFDatabaseManager()
+
+        database_manager.log_recent_pdfs(recent_pdf_file_path)
+
+        database_manager.close_database()
 
 class PDFReaderUI(QMainWindow): #QMainWindow sınıfından türetilen PDFReaderUI sınıfı
     def __init__(self, parent = None): 
@@ -166,14 +200,14 @@ class PDFReaderUI(QMainWindow): #QMainWindow sınıfından türetilen PDFReaderU
         self.zoom_out_push_button.clicked.connect(self.zoom_out_push_button_clicked) # uzaklaştırma butonuna tıklandığında zoom_out_push_button_clicked fonksiyonunu çağır.
 
         self.go_to_page_push_button.clicked.connect(self.go_to_page_push_button_clicked) # sayfaya git butonuna tıklandığında go_to_page_push_button_clicked fonksiyonunu çağır.
-
+    
+    # son kullanılan PDF Dosyasını veritabanına kaydet.
     def log_recent_pdf_file(self, recent_pdf_file_path): 
         database_manager = RecentPDFDatabaseManager()
 
         database_manager.log_recent_pdfs(recent_pdf_file_path)
 
         database_manager.close_database()
-
 
     # dosya tarayıcı butonuna tıklandığında çağrılan fonksiyon.
     def browse_file_push_button_clicked(self):
@@ -242,7 +276,6 @@ class PDFEditorMainUI(QMainWindow): #QMainWindow sınıfından türetilen PDFEdi
         self.clear_recent_pdf_files_push_button.clicked.connect(self.clear_recent_pdf_files_push_button_clicked)
 
 
-
     # arayüz bileşenlerine olay işleyicileri ekle.
     def clear_recent_pdf_files_push_button_clicked(self): 
         database_manager = RecentPDFDatabaseManager() #vertabanına erişmek için nesne oluştur.
@@ -272,7 +305,10 @@ class PDFEditorMainUI(QMainWindow): #QMainWindow sınıfından türetilen PDFEdi
         
         self.merge_pdfs_win.show()
 
-    def parser_push_button_clicked(self): pdf_parser_main = PDFParser()
+    def parser_push_button_clicked(self): 
+        self.pdf_splitter = PDFSplitterUI()
+
+        self.pdf_splitter.show()
 
     def converter_push_button_clicked(self): pdf_converter_main = PDFConverter()
 

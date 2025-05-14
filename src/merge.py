@@ -1,4 +1,4 @@
-from PyPDF2 import PdfMerger
+from pypdf import PdfMerger
 class PDFMerger:
     def __init__(self): 
         self.pdf_merge_manager = PdfMerger() # PdfMerger sınıfndan nesne türet.

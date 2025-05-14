@@ -33,6 +33,7 @@ class RecentPDFDatabaseManager: # veritabanı yöneticisi sınıfı.
         self.database_cursor.execute(f""" DELETE FROM {TABLE_NAME}""") # veritabanı tablosundaki herşeyi sil.
         
         self.database_connection.commit() # veritabanındaki değişiklikleri kaydet. 
+
     # son kullanılan PDF dosyalarını veritabanına ekle.
     def log_recent_pdfs(self, recent_pdf_data):  
         self.database_cursor.execute(f'INSERT INTO {TABLE_NAME} (FILE_PATH, LAST_EXEC_TIME) VALUES (?, ?)', (recent_pdf_data, str(datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")))) # vertabanında ekleme sorgusunu çalıştır.
@@ -41,7 +42,6 @@ class RecentPDFDatabaseManager: # veritabanı yöneticisi sınıfı.
 
     # son kullanılan PDF dosyalarını veritabanından oku.
     def get_recent_pdfs(self): 
-
         self.database_connection.commit()
         
         return self.database_cursor.execute(f'SELECT FILE_PATH, LAST_EXEC_TIME FROM {TABLE_NAME} ORDER BY LAST_EXEC_TIME DESC').fetchall() #vertabanında okuma sorgusunu çalıştır ve sonuçlarını döndür.
