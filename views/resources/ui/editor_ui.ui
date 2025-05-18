@@ -9,14 +9,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>640</height>
+    <width>640</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>480</width>
-    <height>640</height>
+    <width>640</width>
+    <height>720</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -43,7 +43,7 @@
      <rect>
       <x>-10</x>
       <y>70</y>
-      <width>481</width>
+      <width>651</width>
       <height>20</height>
      </rect>
     </property>
@@ -83,7 +83,7 @@
      <rect>
       <x>0</x>
       <y>40</y>
-      <width>481</width>
+      <width>631</width>
       <height>41</height>
      </rect>
     </property>
@@ -123,7 +123,7 @@
      <rect>
       <x>0</x>
       <y>30</y>
-      <width>481</width>
+      <width>641</width>
       <height>20</height>
      </rect>
     </property>
@@ -136,11 +136,22 @@
      <rect>
       <x>10</x>
       <y>90</y>
-      <width>461</width>
-      <height>541</height>
+      <width>621</width>
+      <height>621</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="page_display_label">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>

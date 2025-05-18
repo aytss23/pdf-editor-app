@@ -6,8 +6,8 @@ from controllers.merger_controller import MergerController
 from controllers.convertor_controller import ConvertorController
 from controllers.splitter_controller import SplitterController
 from controllers.editor_controller import EditorController
+from controllers.viewer_controller import ViewerController
 
-#from controllers.viewer_controller import ViewerController
 
 class MainWindowController():
     def __init__(self):
@@ -52,7 +52,7 @@ class MainWindowController():
         self.main_window_ui.update_recent_pdfs_table_view(None)
 
     # PDF okuma Controller sınıfından nesne türet ve arayüzü başlat.
-    def viewer_push_button_clicked(self): return None
+    def viewer_push_button_clicked(self): self.viewer_controller = ViewerController()
 
     # PDF düzenleme Controller sınıfından nesne türet ve arayüzü başlat.
     def editor_push_button_clicked(self): return None
