@@ -15,6 +15,9 @@ class PDFMerger:
         
         return True
     
+    # sonuç PDF dosyasının yolunu döndüren fonksiyon.
+    def get_result_file_path(result_file_path): return None
+
     # Kullanılan dosyaları kapatan ve belleği temizleyen fonksiyon.
     def close_merge_manager(self): self.pdf_merge_manager.close()
     

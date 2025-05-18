@@ -10,51 +10,36 @@ class PDFEditorMainUI(QMainWindow): #QMainWindow sınıfından türetilen PDFEdi
         
         self.init_ui() # arayüz dosyasını içeri aktarma fonksiyonunu çağır.
 
-        # table view özellikleri.
+        # table view model özellikleri. 
         self.recent_pdfs_table_view_model = QStandardItemModel() # tablo görünümü için standart öğe modeli oluştur.
-        
         self.recent_pdfs_table_view.setModel(self.recent_pdfs_table_view_model) # tablo görünümüne standart öğe modelini ata.
         
-        self.recent_pdfs_table_view_model.setHorizontalHeaderLabels(['FILE_PATH', 'LAST_EXEC_TIME']) # tablo görünümündeki başlıkları ayarla.
-        
-        self.recent_pdfs_table_view.setEditTriggers(QTableWidget.NoEditTriggers) #son açılan pdf'lerin tablosunu düzenlemeye kapat. 
-        
-        self.recent_pdfs_table_view.setColumnWidth(0, 350) # ikinci sütunun genişliğini ayarla.
-        self.recent_pdfs_table_view.setColumnWidth(1, 120) # üçüncü sütunun genişliğini ayarla.
-        
-        self.update_recent_pdfs_table_view() # tablo görünümünü güncelleme fonksiyonunu çağır.
-
-
     # arayüz dosyasını içeri aktar. 
     def init_ui(self): loadUi('views\\resources\\ui\\main_ui.ui', self)
 
-    
+    # Arayüzdeki tablonun özelliklerini ayarla.
+    def set_table_view_properties(self):
+        self.recent_pdfs_table_view_model.setHorizontalHeaderLabels(['FILE_PATH', 'LAST_EXEC_TIME']) # tablo görünümündeki başlıkları ayarla.        
+        
+        self.recent_pdfs_table_view.setColumnWidth(0, 350) # ikinci sütunun genişliğini ayarla.
+        self.recent_pdfs_table_view.setColumnWidth(1, 120) # üçüncü sütunun genişliğini ayarla.
+
+        self.recent_pdfs_table_view.setEditTriggers(QTableWidget.NoEditTriggers) #son açılan pdf'lerin tablosunu düzenlemeye kapat. 
+        
     # arayüz bileşenlerini güncelle. 
-    def update_recent_pdfs_table_view(self):
-        
-        self.recent_pdfs_table_view_model.removeRows(0, self.recent_pdfs_table_view_model.rowCount())
+    def update_recent_pdfs_table_view(self, recent_pdfs): 
+        self.recent_pdfs_table_view_model.clear() # tablodaki veriyi ve özelliklerini sil.
+        self.set_table_view_properties() # tablonun özelliklerini ayarla.
 
-        main_model = MainModel()
+        if recent_pdfs == None: return None #Eğer boş veri gelirse güncelleme yapma.  
 
-        #database_manager.log_recent_pdfs([["sample.pdf", "2025-05-10 12:53:56"],["sample2.pdf", "2025-05-10 13:12:32"]])
+        # tabloya verileri ekle.
+        for row_data in recent_pdfs:
+            table_item = [QStandardItem(str(column_data)) for column_data in row_data] # veritabanından alınan satır verilerini QStandartItem verisi listesine dönüştür.
+            self.recent_pdfs_table_view_model.appendRow(table_item) # QStandartItem satır verisi listesini tablodaki ilgili satırdaki kolonlara doldur. 
 
-        recent_pdfs_data = main_model.get_recent_pdfs()
-
-        recent_path_data = []
-        displayed_recent_data = []
-
-        for recent_data_index in range(len(recent_pdfs_data)):
-            recent_path_data.append(recent_pdfs_data[recent_data_index][0])
-
-        for row_data in recent_pdfs_data:
-            if row_data[0] in displayed_recent_data: continue 
-
-            row = [QStandardItem(str(item)) for item in row_data]
-        
-            self.recent_pdfs_table_view_model.appendRow(row) 
-            
-            displayed_recent_data.append(row_data[0])
-
+        return True
+    
     # uygulamayı kapat.
     def close_app(self): self.close()
 

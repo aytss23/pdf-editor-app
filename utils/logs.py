@@ -35,7 +35,7 @@ class RecentFileLogger: # veritabanı yöneticisi sınıfı.
         self.database_connection.commit() # veritabanındaki değişiklikleri kaydet. 
 
     # son kullanılan PDF dosyalarını veritabanına ekle.
-    def log_recent_pdfs(self, recent_pdf_data):  
+    def log_recent_pdf(self, recent_pdf_data):  
         self.database_cursor.execute(f'INSERT INTO {TABLE_NAME} (FILE_PATH, LAST_EXEC_TIME) VALUES (?, ?)', (recent_pdf_data, str(datetime.datetime.now().strftime("%d/%m/%Y, %H:%M:%S")))) # vertabanında ekleme sorgusunu çalıştır.
         
         self.database_connection.commit() # Veritabanı değişikliklerini kaydet.
