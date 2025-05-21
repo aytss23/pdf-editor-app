@@ -22,7 +22,7 @@ class MainWindowController():
         main_model = MainModel()
 
         self.main_window_ui.update_recent_pdfs_table_view(main_model.update_recent_pdfs())
-        
+    
     # arayüz bileşenlerinin özelliklerini tanımla.
     def set_widget_signals(self): 
         
@@ -39,8 +39,10 @@ class MainWindowController():
 
         self.main_window_ui.exit_push_button.clicked.connect(self.exit_push_button_clicked) # Çıkış butonuna tıklandığında exit_push_button_clicked fonksiyonunu çağır.
 
-        self.main_window_ui.clear_recent_pdf_files_push_button.clicked.connect(self.clear_recent_pdf_files_push_button_clicked)
+        self.main_window_ui.clear_recent_pdf_files_push_button.clicked.connect(self.clear_recent_pdf_files_push_button_clicked) # Geçmiş dosyaları temizleme butonuna tıklandığında ilgili fonksiyonu çağır.
 
+        self.main_window_ui.recent_pdfs_table_view.clicked.connect(self.recent_pdfs_table_view_clicked) # geçmiş dosya tablosuna tıklandığında ilgili fonksiyonu çağır.
+   
     # arayüz bileşenlerine olay işleyicileri ekle.
     def clear_recent_pdf_files_push_button_clicked(self): 
 
@@ -50,6 +52,15 @@ class MainWindowController():
         main_model.delete_recent_pdfs()
 
         self.main_window_ui.update_recent_pdfs_table_view(None)
+
+    def recent_pdfs_table_view_clicked(self, clicked_index): 
+        clicked_row = clicked_index.row()
+
+        selected_file_path = self.main_window_ui.recent_pdfs_table_view.model().item(clicked_row, 0).text()
+
+        self.viewer_controller = ViewerController()
+
+        self.viewer_controller.browse_file_push_button_clicked(selected_file_path)
 
     # PDF okuma Controller sınıfından nesne türet ve arayüzü başlat.
     def viewer_push_button_clicked(self): self.viewer_controller = ViewerController()

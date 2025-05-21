@@ -169,7 +169,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="current_page_line_edit">
        <property name="maximumSize">
         <size>
          <width>32</width>
@@ -200,12 +200,25 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="max_page_line_edit">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="maximumSize">
         <size>
          <width>32</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>
