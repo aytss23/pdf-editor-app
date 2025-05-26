@@ -1,15 +1,20 @@
 from views.merge_ui import PDFMergerUI
 from models.main_model import MainModel
 from models.merger_model import PDFMerger
+from PyQt5.QtCore import QTimer
+from threading import Thread, Event
 
 class MergerController():
     def __init__(self):
 
         self.merger_ui = PDFMergerUI() # UI sınıfından nesne türet ve arayüzü oluştur.
-        self.merger_ui.show() # arayüzü göster.
+        
+        self.merger_model = PDFMerger() # Model sınıfından nesne türet.
 
         self.set_widget_signals() # arayüz bileşenlerinin özelliklerini ayarlama fonksiyonunu çağır.
 
+        self.merger_ui.show() # arayüzü göster.
+        
         # arayüz bileşenlerinin özelliklerini ayarla.
     def set_widget_signals(self):
 
@@ -29,11 +34,26 @@ class MergerController():
 
     # pdf birleştirme butonuna tıklandığında çağrılan fonksiyon.
     def merge_pdfs_push_button_clicked(self): 
-        pdf_merge_manager = PDFMerger()
+        
+        def start_merge_thread():
+            self.merger_model.merger_two_pdfs([self.merger_ui.pdf_file_a_path_line_edit.text(), self.merger_ui.pdf_file_b_path_line_edit.text()])
+            self.merger_model.write_into_new_pdf_file(self.merger_ui.result_pdf_file_path_line_edit.text())
 
-        pdf_merge_manager.merger_two_pdfs([self.merger_ui.pdf_file_a_path_line_edit.text(), self.merger_ui.pdf_file_b_path_line_edit.text()])
+        merge_thread = Thread(target=start_merge_thread)
+        merge_thread.start()
 
-        pdf_merge_manager.write_into_new_pdf_file(self.merger_ui.result_pdf_file_path_line_edit.text())
+        def check_progress():
+            if merge_thread.is_alive():
+            
+                self.merger_ui.update_progress_status(on_progress=True, is_started=True)
+                
+                
+            else: 
+                self.merger_ui.update_progress_status(on_progress=False, is_started=True)
+            
+            QTimer.singleShot(100, check_progress)
+        
+        check_progress() # güncellemeyi başlat.
 
-    # birleştirilen pdf dosyalarının bulunduğu klasörü açan fonksiyon. 
-    def set_pdf_result_path_clicked(self): self.merger_ui.result_pdf_file_path_line_edit.setText(MainModel.start_folder_browser(self.merger_ui, "SELECT SECOND FILE") + "/merged_pdf_result.pdf") 
+    # birleştirilen pdf dosyalarının bulunduğu klasörü açan fonksiyon.
+    def set_pdf_result_path_clicked(self): self.merger_ui.result_pdf_file_path_line_edit.setText(MainModel.start_folder_browser(self.merger_ui, "SELECT SECOND FILE") + "/merged_pdf_result.pdf")

@@ -60,7 +60,9 @@ class MainWindowController():
 
         self.viewer_controller = ViewerController()
 
-        self.viewer_controller.browse_file_push_button_clicked(selected_file_path)
+        self.viewer_controller.viewer_model.open_pdf_file(selected_file_path)
+
+        self.viewer_controller.viewer_model.render_selected_page()
 
     # PDF okuma Controller sınıfından nesne türet ve arayüzü başlat.
     def viewer_push_button_clicked(self): self.viewer_controller = ViewerController()
@@ -75,7 +77,7 @@ class MainWindowController():
     def splitter_push_button_clicked(self): self.splitter_controller = SplitterController()
 
     # PDF dönüştürme Controller sınıfından nesne türet ve arayüzü başlat. 
-    def converter_push_button_clicked(self): return None
+    def converter_push_button_clicked(self): self.converter_controller = ConvertorController()
 
     # UI sınıfına sinyal gönder ve uygulamayı kapat. 
     def exit_push_button_clicked(self): self.main_window_ui.close_app() # uygulamayı kapat.

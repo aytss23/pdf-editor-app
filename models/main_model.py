@@ -38,6 +38,7 @@ class MainModel:
     def save_output_file_as(file_path, new_save_path): return None
 
     # Dosya tarayıcısını başlat.
+    # seçilen dosya yolu daha sonradan tekrardan kontrol edilecek. 
     @staticmethod
     def start_file_browser(ui_obj, browser_title, file_filter): return QFileDialog.getOpenFileName(ui_obj, browser_title, "", file_filter)
 

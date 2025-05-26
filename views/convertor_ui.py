@@ -7,5 +7,5 @@ class PDFConverterUI(QMainWindow): #QMainWindow sınıfından türetilen PDFConv
         self.init_ui() #arayüz dosyasını içeri aktar. 
         
     # arayüz dosyasını içeri aktaran fonksiyon.
-    def init_ui(self): loadUi("..\\ui\\convert_ui.ui", self)
+    def init_ui(self): loadUi("views\\resources\\ui\\convert_ui.ui", self)
 

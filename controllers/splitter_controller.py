@@ -2,6 +2,7 @@ from views.splitter_ui import PDFSplitterUI
 from models.splitter_model import PDFSplitter
 from models.main_model import MainModel
 from threading import Thread
+
 class SplitterController():
     def __init__(self):
 
@@ -29,6 +30,8 @@ class SplitterController():
     # dosya parçalama butonu tıklanınca çağrılan fonksiyon.
     def split_pdf_file_push_button_clicked(self): 
         
+        if not (self.splitter_ui.pdf_file_path_line_edit.text() and self.splitter_ui.result_pdf_file_path_line_edit.text()): return False
+
         def start_split_thread():
             pdf_splitter = PDFSplitter() # PDFSplitter sınıfından nesne oluştur.
             
@@ -37,7 +40,7 @@ class SplitterController():
 
         splitter_thread = Thread(target=start_split_thread)
         splitter_thread.start()        
-
+        
         # İşlemde kullanılan PDF dosyasını son kullanılan PDF dosyalarına ekle.
         logger = MainModel()
         logger.log_recent_pdf(self.splitter_ui.pdf_file_path_line_edit.text())
