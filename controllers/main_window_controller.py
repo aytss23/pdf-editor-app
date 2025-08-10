@@ -68,7 +68,7 @@ class MainWindowController():
     def viewer_push_button_clicked(self): self.viewer_controller = ViewerController()
 
     # PDF düzenleme Controller sınıfından nesne türet ve arayüzü başlat.
-    def editor_push_button_clicked(self): return None
+    def editor_push_button_clicked(self): self.editor_controller = EditorController()
 
     # PDF birleştirme Controller sınıfından nesne türet ve arayüzü başlat.
     def merger_push_button_clicked(self): self.merger_controller = MergerController()

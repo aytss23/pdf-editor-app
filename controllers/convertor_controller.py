@@ -31,7 +31,7 @@ class ConvertorController(): # PDFConvertorUI sınıfından bir ConvertorControl
         self.converter_model.selected_file_path = self.converter_ui.selected_file_path_line_edit.text()
         self.converter_model.result_file_path = self.converter_ui.result_pdf_file_path_line_edit.text()
         
-        self.converter_model.convert_image_to_pdf()
+        self.converter_model.convert_image_to_pdf() # Seçilen dosyayı PDF'e dönüştür.
     
     # Sonuç dosyası yolu seçme butonu tıklanınca çalışan fonksiyon.
     def set_result_path_push_button_clicked(self): self.converter_ui.result_pdf_file_path_line_edit.setText(MainModel.start_folder_browser(self.converter_ui, "SELEC A RESULT FOLDER"))

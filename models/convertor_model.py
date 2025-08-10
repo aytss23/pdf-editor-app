@@ -2,6 +2,7 @@ from PIL import Image
 
 class PDFConverter: 
     def __init__(self):
+
         self.selected_file_path = None  # Seçilen dosya yolu
         
         self.result_file_path = None # Sonuç dosyası yolu
@@ -18,5 +19,6 @@ class PDFConverter:
     def conver_to_ppt_to_pdf_with_api(self): print(".pptx to .pdf[API]")
 
     def convert_image_to_pdf(self):
-        try: Image.open(self.selected_file_path).convert("RGB").save(self.result_file_path, "PDF")
-        except Exception as ConversionError: return None
+        try: Image.open(self.selected_file_path).convert("RGB").save(self.result_file_path, "PDF", resolution=100.0) # Görüntü dosyasını PDF'e dönüştürür.
+
+        except Exception as ConversionError: print("error!") # Dönüştürme işlemi başarısız olursa None döner.

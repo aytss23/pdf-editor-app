@@ -43,13 +43,13 @@ class MergerController():
         merge_thread.start()
 
         def check_progress():
+            
             if merge_thread.is_alive():
             
                 self.merger_ui.update_progress_status(on_progress=True, is_started=True)
                 
                 
-            else: 
-                self.merger_ui.update_progress_status(on_progress=False, is_started=True)
+            else: self.merger_ui.update_progress_status(on_progress=False, is_started=True)
             
             QTimer.singleShot(100, check_progress)
         

@@ -26,7 +26,6 @@ class PDFMergerUI(QMainWindow): #QMainWindow sınıfından türetilen PDFMergerU
 
             self.merge_pdfs_push_button.setText("COMPLETED")
 
-
         def set_default():
             self.merge_pdfs_push_button.setEnabled(True)
             

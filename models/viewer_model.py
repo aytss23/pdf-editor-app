@@ -1,5 +1,5 @@
 import fitz as PDFLoader
-from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtGui import QImage, QPixmap, QLinearGradient, QColor, QBrush
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene
 
 class PDFViewer(QGraphicsView):
@@ -9,7 +9,16 @@ class PDFViewer(QGraphicsView):
         self.set_view_parameters() # Görüntüleme parametrelerini tanımla.
         
         self.render_scene = QGraphicsScene()
+        
+        '''
+        self.background_gradient = QLinearGradient(0, 0, 400, 600) # Arka plan gradyanı tanımla.
+        
+        self.background_gradient.setColorAt(0, QColor(255, 255, 255)) # Gradyanın başlangıç rengi beyaz.
+        self.background_gradient.setColorAt(1, QColor(0, 0, 0)) # Gradyanın bitiş rengi siyah.
 
+        self.render_scene.setBackgroundBrush(QBrush(self.background_gradient)) # Gradyanı arka plana uygula.
+        '''
+        
         self.setScene(self.render_scene)
         
         self.setDragMode(QGraphicsView.ScrollHandDrag)

@@ -7,6 +7,6 @@ class PDFEditorUI(QMainWindow): #QMainWindow sınıfından türetilen PDFEditorU
         self.init_ui() # arayüzü içeri aktarma fonksiyonun çağır.
 
     # arayüzü içeri aktarma fonksiyonu.
-    def init_ui(self): loadUi("..\\ui\\editor_ui.ui", self)
+    def init_ui(self): loadUi("views\\resources\\ui\\editor_ui.ui", self)
 
     
